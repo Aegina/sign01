@@ -42,7 +42,13 @@
 	function toTwo(str){
 		return  str < 10 ? "0"+str : str
 	}
-	
+	function isIE() {
+		if (!!window.ActiveXObject || "ActiveXObject" in window){
+			return true;
+		}else{
+			return false;
+		}
+	}
 	// 判断是否存在签名信息
 	if(localStorage.getItem("eachInfo")) {
 		// 已经有一个签名了  获取签名者信息（姓名 时间）
@@ -134,9 +140,11 @@
 					srcArr = srcArr.concat(parse_info);
 					id = parse_info.length;
 				};
-				if(reseted){
-					mui.toast("请在页面上进行绘制签名");
+				if(xDis > 0){
 					reseted = false;
+				}
+				if(reseted){
+					mui.toast("请在页面上进行签名绘制");
 					return false;
 				};
 				if(xDis == 0 || yDis == 0 ){
@@ -167,6 +175,7 @@
 					// 获取图片width height
 					finished = true;
 					mui.toast("已完成签名");
+					localStorage.setItem("finished",true)
 					setTimeout(function(){
 						window.location.reload();
 					},2000) 
@@ -186,13 +195,29 @@
 		var allInfo = JSON.parse(localStorage.getItem("eachInfo"));
 		if(procedure && !finished){
 			// 没有完成当前签名    如果是还没有刷新后的删除动作，则重置画布
-			mui.confirm("您还没有点击完成签名，确认重置吗","重置签名",["取消","确定"],function(e){
-				if(e.index === 1){
+		
+			//以下是调用上面的函数
+			if (isIE()) {
+				if(xDis == 0){
+					mui.toast("请在页面上进行签名绘制");
+					return false;
+				}
+				var conf = confirm("您还没有点击完成签名，确认重置吗") ;
+				if(conf){
 					$sigdiv.jSignature();
 					$sigdiv.jSignature("reset"); //重置画布，可以进行重新作画.
 					reseted = true;  // 已点击过重置按钮 应该继续绘制签名
+					xDis = 0;yDis=0;
 				}
-			})
+			}else{
+				mui.confirm("您还没有点击完成签名，确认重置吗","重置签名",["取消","确定"],function(e){
+					if(e.index === 1){
+						$sigdiv.jSignature();
+						$sigdiv.jSignature("reset"); //重置画布，可以进行重新作画.
+						reseted = true;  // 已点击过重置按钮 应该继续绘制签名
+					}
+				})
+			}
 		}else{
 			if(!allInfo || allInfo.length < 1){
 				mui.toast("签名板上没有任何签名");
@@ -228,18 +253,39 @@
 	
 	// 清除所有签名
 	$("#clear").click(function(){
-		if(myInfo.is_boss){
-			mui.confirm("确认清除所有签名吗","清除所有签名",["取消","确定"],function(e){
-				if(e.index === 1){
-					localStorage.clear();
-					mui.toast("已清除页面所有签名");
-					setTimeout(function(){
-						window.location.reload();
-					},500)
+		if(!JSON.parse(localStorage.getItem("finished"))){
+			mui.toast("请先完成当前签名的绘制");
+			return false;
+		}
+		if(localStorage.getItem("eachInfo")){
+			
+			if(myInfo.is_boss){
+				if (isIE()) {
+					var conf = confirm("确认清除所有签名吗");
+					if(conf){
+						localStorage.clear();
+						mui.toast("已清除页面所有签名");
+						setTimeout(function(){
+							window.location.reload();
+						},500)
+					}
+				}else{
+					mui.confirm("确认清除所有签名吗","清除所有签名",["取消","确定"],function(e){
+						if(e.index === 1){
+							localStorage.clear();
+							mui.toast("已清除页面所有签名");
+							setTimeout(function(){
+								window.location.reload();
+							},500)
+						}
+					})
 				}
-			})
+			}else{
+				mui.toast("抱歉，您没有权限进行此操作")
+			}
 		}else{
-			mui.toast("抱歉，您没有权限进行此操作")
+			mui.toast("页面上没有任何签名，请开始绘制签名");
+			return false;
 		}
 		
 	})
