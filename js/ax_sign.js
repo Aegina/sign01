@@ -126,6 +126,7 @@
 	
 	$("#yes").click(function() {
 		var id = 0;
+		reseted = true;
 		if(procedure) {
 			if(!finished) {
 				if(localStorage.getItem("eachInfo")) {
