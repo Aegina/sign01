@@ -253,12 +253,12 @@
 	
 	// 清除所有签名
 	$("#clear").click(function(){
-		if(!localStorage.getItem("eachInfo")){
-			if(procedure && finished){
-				mui.toast("请先完成当前签名的绘制");
-				return false;
-			}
-		}
+//		if(!localStorage.getItem("eachInfo")){
+//			if(procedure && finished){
+//				mui.toast("请先完成当前签名的绘制");
+//				return false;
+//			}
+//		}
 		if(localStorage.getItem("eachInfo")){
 			
 			if(myInfo.is_boss){
