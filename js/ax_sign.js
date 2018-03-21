@@ -122,6 +122,8 @@
 	// 结束事件
 	var finished = false;  // 是否结束 false表示未点击结束按钮
 	var srcArr = [];
+	var reseted = false;  // 是否点击过重置 点击后为true 则不能点击完成
+	
 	$("#yes").click(function() {
 		var id = 0;
 		if(procedure) {
@@ -130,12 +132,13 @@
 					var parse_info = JSON.parse(localStorage.getItem("eachInfo"));
 					srcArr = srcArr.concat(parse_info);
 					id = parse_info.length;
-				}
+				};
+				if(reseted){
+					mui.toast("请在页面上进行绘制签名");
+					return false;
+				};
 				if(xDis == 0 || yDis == 0 ){
 					mui.toast("还没有签名")
-					return false;
-				}if(reseted){
-					mui.toast("请在页面上进行绘制签名");
 					return false;
 				}else{
 					//将画布内容转换为图片
@@ -176,7 +179,7 @@
 			return false;
 		}
 	});
-	var reseted = false;
+
 	$("#reset").click(function(){
 		var allInfo = JSON.parse(localStorage.getItem("eachInfo"));
 		if(procedure && !finished){
