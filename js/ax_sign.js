@@ -4,7 +4,7 @@
 		name: "王明明",
 		id: 2,
 		is_draw: true,
-		is_boss: false
+		is_boss: true
 	};
 	// 如果存在表单信息  回显
 	if(localStorage.getItem("fillInfo")){
