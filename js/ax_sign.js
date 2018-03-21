@@ -220,7 +220,7 @@
 	// 清除所有签名
 	$("#clear").click(function(){
 		if(myInfo.is_boss){
-			mui.confirm("签名版上还有其他签名，确认清除吗","清除所有签名",["取消","确定"],function(e){
+			mui.confirm("确认清除所有签名吗","清除所有签名",["取消","确定"],function(e){
 				if(e.index === 1){
 					localStorage.clear();
 					mui.toast("已清除页面所有签名");
