@@ -126,7 +126,7 @@
 	
 	$("#yes").click(function() {
 		var id = 0;
-		reseted = false;
+		
 		if(procedure) {
 			if(!finished) {
 				if(localStorage.getItem("eachInfo")) {
@@ -136,6 +136,7 @@
 				};
 				if(reseted){
 					mui.toast("请在页面上进行绘制签名");
+					reseted = false;
 					return false;
 				};
 				if(xDis == 0 || yDis == 0 ){
@@ -189,7 +190,7 @@
 				if(e.index === 1){
 					$sigdiv.jSignature();
 					$sigdiv.jSignature("reset"); //重置画布，可以进行重新作画.
-					reseted = true;
+					reseted = true;  // 已点击过重置按钮 应该继续绘制签名
 				}
 			})
 		}else{
