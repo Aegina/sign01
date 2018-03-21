@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>签名测试</title>
+		<style type="text/css">
+			.sign_userInfo {
+				padding: 10px;
+				background: #000;
+				opacity: 0.7;
+				border-radius: 7px;
+				line-height: 25px;
+				font-size: 14px;
+				width: 200px;
+				color: #fff;
+				display: none;
+			}
+			#content_wrap{}
+			.jSignature {
+				height: 100%!important;
+			}
+			table td{
+				box-sizing: border-box;
+				-moz-box-sizing: border-box;
+				-webkit-box-sizing: border-box;
+				width: 12.5%;
+				padding: 3px;
+				font-size: 14px;
+			}
+			#content_wrap i{
+				font-style: normal;
+				margin-left: 18px;
+			}
+			.sign_advice{
+				height: 130px;
+			}
+			#content_wrap h3{
+				font-size: 16px;
+			}
+			#content_wrap input,#content_wrap select,#content_wrap textarea{
+				background: none;
+				border: none;
+				width: 100%;
+				padding: 0;
+				margin: 0;
+			}
+		</style>
+		<link href="css/mui.min.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<!-- sign_domWrap 是页面所有内容的框 -->
+		<div id="sign_domWrap">
+			<div id="content_wrap">
+				<h3 class="mui-text-center">员工任职审批表</h3>
+				<p class="mui-text-right">注：此表在傲雄在线系统中调用</p>
+				<p class="mui-clearfix"><span class="mui-pull-left">报送单位：</span><span class="mui-pull-right">报送时间：<i>年</i><i>月</i><i>日</i></span></p>
+				<table width="100%" border="" cellspacing="" cellpadding="2">
+					<tr>
+						<td>姓名</td>
+						<td colspan="1"><input type="text" name="" id="name" value="" placeholder="王磊"/></td>
+						<td>性别</td>
+						<td colspan="1">
+							<select name="" id="gender">
+								<option value="">请选择</option>
+								<option value="男">男</option>
+								<option value="女">女</option>
+							</select>
+						</td>
+						<td>出生日期</td>
+						<td colspan="1">
+							<input type="date" name="" id="birthday" value="" />
+						</td>
+						<td>学历</td>
+						<td colspan="1">
+							<select name="" id="education">
+								<option value="">请选择</option>
+								<option value="博士">博士</option>
+								<option value="硕士">硕士</option>
+								<option value="本科">本科</option>
+								<option value="大专">大专</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>籍贯</td>
+						<td>
+							<select name="" id="hometown">
+								<option value="">请选择</option>
+								<option value="重庆">重庆</option>
+								<option value="四川">四川</option>
+								<option value="湖南">湖南</option>
+								<option value="甘肃">甘肃</option>
+							</select>
+						</td>
+						<td>参加工作时间</td>
+						<td colspan="2"><input type="date" name="" id="stWorkTime" value="" /></td>
+						<td>入职时间</td>
+						<td colspan="2"><input type="date" name="" id="stCWorkTime" value="" /></td>
+					</tr>
+					<tr>
+						<td colspan="2">现所在部门(单位)</td>
+						<td colspan="2">
+							<select name="" id="nowDpt">
+								<option value="">请选择</option>
+								<option value="开发部">开发部</option>
+								<option value="设计部">设计部</option>
+								<option value="产品部">产品部</option>
+								<option value="市场部">市场部</option>
+							</select>
+						</td>
+						<td colspan="2">现岗位(职务)</td>
+						<td colspan="2">
+							<select name="" id="nowJob">
+								<option value="">请选择</option>
+								<option value="开发工程师">开发工程师</option>
+								<option value="设计师">设计师</option>
+								<option value="产品经理">产品经理</option>
+								<option value="市场经理">市场经理</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">拟任职部门</td>
+						<td colspan="2">
+							<select name="" id="futDpt">
+								<option value="">请选择</option>
+								<option value="设计部">设计部</option>
+								<option value="市场部">市场部</option>
+								<option value="研发部">研发部</option>
+								<option value="产品部">产品部</option>
+							</select>
+						</td>
+						<td colspan="2">拟任职务</td>
+						<td colspan="2">
+							<select name="" id="futJob">
+								<option value="">请选择</option>
+								<option value="产品总监">产品总监</option>
+								<option value="技术总监">技术总监</option>
+								<option value="市场总经理">市场总经理</option>
+								<option value="设计总监">设计总监</option>
+							</select>
+						</td>
+					</tr>
+					<tr class="sign_advice">
+						<td colspan="2">拟任职部门意见</td>
+						<td colspan="6">
+							<textarea name="" rows="" cols="" placeholder="拟任职部门意见" id="dptAdvice"></textarea>
+						</td>
+					</tr>
+					<tr class="sign_advice">
+						<td colspan="2">行政部意见</td>
+						<td colspan="6">
+							<textarea name="" rows="" cols="" placeholder="行政部意见" id="admDpt"></textarea>
+						</td>
+					</tr>
+
+					<tr class="sign_advice">
+						<td colspan="2">总经理意见</td>
+						<td colspan="6" >
+							<textarea name="" rows="" cols="" placeholder="总经理意见" id="managerDpt"></textarea>
+						</td>
+					</tr>
+
+					<tr class="sign_advice">
+						<td colspan="2">集团意见</td>
+						<td colspan="6" placeholder="集团意见">
+							<textarea name="" rows="" cols="" placeholder="集团意见" id="groupDpt"></textarea>
+						</td>
+					</tr>
+					<tr class="sign_advice">
+						<td colspan="2">集团总裁批示</td>
+						<td colspan="6">
+							<textarea name="" rows="" cols="" placeholder="集团总裁意见" id="bigBossDpt"></textarea>
+						</td>
+					</tr>
+				</table>
+				<p> 注：1.主管级以上（含主管）人员任职，必须填报此表。<br />2.拟任职人员的考评表、简历及相关证件（复印件）附审批表后，一并报集团审批。<br />3.员工任职审批后，一周内下任职通知。任职通知必须报送集团备案。</p>
+			</div>
+			<div id="sign_content"></div>
+			<div class="sign_btns"></div>
+		</div>
+	</body>
+	<script src="js/jquery.js"></script>
+	<script src="js/jSignature.min.js"></script>
+	<script src="js/mui.min.js"></script>
+	<script src="js/ax_sign.js"></script>
+	<script type="text/javascript" charset="utf-8">
+		mui.init();
+				// 获取当前点到下一点的距离
+		function getTP(now,next){
+			var x2 = next.x, x1 = now.x, y2 = next.y, y1 = now.y;
+			return Math.sqrt(Math.pow((x2-x1),2)+Math.pow((y2-y1),2));
+		}
+	</script>
+
+</html>
