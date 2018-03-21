@@ -134,6 +134,9 @@
 				if(xDis == 0 || yDis == 0 ){
 					mui.toast("还没有签名")
 					return false;
+				}if(reseted){
+					mui.toast("请在页面上进行绘制签名");
+					return false;
 				}else{
 					//将画布内容转换为图片
 					var datapair = $sigdiv.jSignature("getData", "image");
@@ -173,8 +176,8 @@
 			return false;
 		}
 	});
+	var reseted = false;
 	$("#reset").click(function(){
-		
 		var allInfo = JSON.parse(localStorage.getItem("eachInfo"));
 		if(procedure && !finished){
 			// 没有完成当前签名    如果是还没有刷新后的删除动作，则重置画布
@@ -182,6 +185,7 @@
 				if(e.index === 1){
 					$sigdiv.jSignature();
 					$sigdiv.jSignature("reset"); //重置画布，可以进行重新作画.
+					reseted = true;
 				}
 			})
 		}else{
