@@ -175,7 +175,7 @@
 					// 获取图片width height
 					finished = true;
 					mui.toast("已完成签名");
-					localStorage.setItem("finished",true)
+//					localStorage.setItem("finished",true)
 					setTimeout(function(){
 						window.location.reload();
 					},2000) 
@@ -253,10 +253,11 @@
 	
 	// 清除所有签名
 	$("#clear").click(function(){
-		console.log(typeof JSON.parse(localStorage.getItem("finished")))
-		if(procedure && !JSON.parse(localStorage.getItem("finished"))){
-			mui.toast("请先完成当前签名的绘制");
-			return false;
+		if(!localStorage.getItem("eachInfo")){
+			if(procedure && finished){
+				mui.toast("请先完成当前签名的绘制");
+				return false;
+			}
 		}
 		if(localStorage.getItem("eachInfo")){
 			
