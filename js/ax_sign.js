@@ -253,6 +253,7 @@
 	
 	// 清除所有签名
 	$("#clear").click(function(){
+		console.log(typeof JSON.parse(localStorage.getItem("finished")))
 		if(procedure && !JSON.parse(localStorage.getItem("finished"))){
 			mui.toast("请先完成当前签名的绘制");
 			return false;
