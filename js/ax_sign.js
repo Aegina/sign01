@@ -286,6 +286,10 @@
 				mui.toast("抱歉，您没有权限进行此操作")
 			}
 		}else{
+			if(procedure && !finished){
+				mui.toast("请先完成当前签名的绘制");
+				return false;
+			}
 			mui.toast("页面上没有任何签名，请开始绘制签名");
 			return false;
 		}
