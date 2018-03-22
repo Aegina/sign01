@@ -6,17 +6,20 @@
 		is_draw: true,
 		is_boss: true
 	};
-	// 如果存在表单信息  回显
-	if(localStorage.getItem("fillInfo")){
-		var fillInfo = JSON.parse(localStorage.getItem("fillInfo"));
-		
-		$("#name").val(fillInfo.name);
-		$("#gender").val(fillInfo.gender);
-		$("#birthday").val(fillInfo.birthday);
-		$("#education").val(fillInfo.educ);
-		$("#hometown").val(fillInfo.hometown);$("#stWorkTime").val(fillInfo.stWorktime);$("#stCWorkTime").val(fillInfo.stcWorkTime);$("#nowDpt").val(fillInfo.nowDpt);
-		$("#nowJob").val(fillInfo.nowJob); $("#futDpt").val(fillInfo.futDpt); $("#futJob").val(fillInfo.futJob);
-		$("#dptAdvice").val(fillInfo.futDptAdv);$("#admDpt").val(fillInfo.admAdv);$("#managerDpt").val(fillInfo.manaAdv);$("#groupDpt").val(fillInfo.groupAdv); $("#bigBossDpt").val(fillInfo.bigBoss);
+	// 如果存在表单信息  渲染页面
+	if(localStorage.getItem("formInfo")){
+		var formInfo = JSON.parse(localStorage.getItem("formInfo"));
+		console.log(formInfo)
+		for(var i = 0; i < formInfo.ic.length; i++){
+			var el = null;
+			var _this = formInfo.ic[i]
+			if(_this == "id"){
+				el = $("#"+formInfo.k[i]);
+			}else{
+				el = $('input[name="'+formInfo.k[i]+'"]');
+			}
+			el.val(formInfo.v[i])
+		}
 	}
 	// 初始化创建dom元素
 	(function initDom(){
@@ -82,35 +85,34 @@
 	}
 	var procedure = false;  // 是否开始
 	var $sigdiv = $("#signature");
+	
+	
+//	localStorage.clear();
 	// 开始签名 按钮
 	$("#start").click(function() {
 		mui.toast("请开始签名");
 		$("#sign_content").css("z-index", "10");
 		
-		// 获取表单信息
-		var name = $("#name").val(),gender = $("#gender").val(),birthday = $("#birthday").val(),educ = $("#education").val(),
-			hometown = $("#hometown").val(),stWorktime = $("#stWorkTime").val(),stcWorkTime = $("#stCWorkTime").val(),
-			nowDpt = $("#nowDpt").val(),nowJob = $("#nowJob").val(),futDpt = $("#futDpt").val(),futJob = $("#futJob").val(),
-			futDptAdv = $("#dptAdvice").val(),admAdv = $("#admDpt").val(),manaAdv = $("#managerDpt").val(),groupAdv = $("#groupDpt").val(),bigBoss = $("#bigBossDpt").val();
-		var fillInfo = {
-			name:name,
-			gender:gender,
-			birthday:birthday,
-			educ:educ,
-			hometown:hometown,
-			stWorktime:stWorktime,
-			stcWorkTime:stcWorkTime,
-			nowDpt:nowDpt,
-			nowJob:nowJob,
-			futDpt:futDpt,
-			futJob:futJob,
-			futDptAdv:futDptAdv,
-			admAdv:admAdv,
-			manaAdv:manaAdv,
-			groupAdv:groupAdv,
-			bigBoss:bigBoss
-		};
-		localStorage.setItem("fillInfo",JSON.stringify(fillInfo))
+		// 循环所有表单信息 并获取表单信息
+		var formInfo = {ic:[],k:[],v:[]};
+		$("input,select,textarea").each(function(i){
+			// 判断是否存在id或class或name属性
+			if($(this).attr("id") !== "" || $(this).attr("name") !== "" ){
+				var k = $(this).attr("id") ? $(this).attr("id") : $(this).attr("name"), v = $(this).val();
+				var ic = $(this).attr("id") ? "id" : "name";
+				formInfo.ic.push(ic);
+				formInfo.k.push(k);
+				formInfo.v.push(v);
+			}else{
+				$(this).attr("name",$(this).context.tagName+i);
+				var ic = $(this).context.tagName;
+				var k = $(this).attr("name"),v = $(this).val();
+				formInfo.ic.push(ic);
+				formInfo.k.push(k);
+				formInfo.v.push(v)
+			}
+		})
+		localStorage.setItem("formInfo",JSON.stringify(formInfo))
 		
 		if(!procedure) {
 			// 获取页面高度 使之可以在整个页面上进行绘制
@@ -226,7 +228,6 @@
 				var _self = false,i_id=0;
 				for(var i in allInfo){
 					if(myInfo.id == allInfo[i].id){
-						console.log("本人");
 						i_id = i;
 						_self = true;
 					}
@@ -239,7 +240,6 @@
 					// 如果是删除刷新后的签名信息，则需要清除本地存储
 					mui.toast("已删除您的所有签名信息")
 					allInfo.splice(i_id,1);
-					console.log(allInfo)
 					localStorage.setItem("eachInfo",JSON.stringify(allInfo))
 					setTimeout(function(){
 						window.location.reload();
@@ -253,19 +253,14 @@
 	
 	// 清除所有签名
 	$("#clear").click(function(){
-//		if(!localStorage.getItem("eachInfo")){
-//			if(procedure && finished){
-//				mui.toast("请先完成当前签名的绘制");
-//				return false;
-//			}
-//		}
 		if(localStorage.getItem("eachInfo")){
-			
+			// 最大权限 可删除所有信息
 			if(myInfo.is_boss){
+				// 兼容IE的信息确认框
 				if (isIE()) {
 					var conf = confirm("确认清除所有签名吗");
 					if(conf){
-						localStorage.clear();
+						localStorage.removeItem("eachInfo");
 						mui.toast("已清除页面所有签名");
 						setTimeout(function(){
 							window.location.reload();
@@ -274,7 +269,7 @@
 				}else{
 					mui.confirm("确认清除所有签名吗","清除所有签名",["取消","确定"],function(e){
 						if(e.index === 1){
-							localStorage.clear();
+							localStorage.removeItem("eachInfo");
 							mui.toast("已清除页面所有签名");
 							setTimeout(function(){
 								window.location.reload();
@@ -286,10 +281,12 @@
 				mui.toast("抱歉，您没有权限进行此操作")
 			}
 		}else{
+			// 没有完成当前签名
 			if(procedure && !finished){
 				mui.toast("请先完成当前签名的绘制");
 				return false;
 			}
+			// 页面上没有任何签名时没有删除
 			mui.toast("页面上没有任何签名，请开始绘制签名");
 			return false;
 		}
